@@ -50,13 +50,15 @@
       color: #222;
     }
 
-    #quiz {
+    #quiz,
+    #result {
       display: none;
     }
 
-    #result {
+    #score {
+      font-size: 28px;
       font-weight: bold;
-      margin-top: 15px;
+      text-align: center;
     }
   </style>
 </head>
@@ -99,27 +101,23 @@
 
     <h2>📝 Pharmacy MCQ</h2>
 
-    <p><strong>Question 1:</strong></p>
+    <p id="questionNumber"></p>
 
-    <p>Which route of drug administration generally gives 100% bioavailability?</p>
+    <h3 id="question"></h3>
 
-    <button class="option" onclick="checkAnswer(false)">
-      A. Oral
-    </button>
+    <div id="options"></div>
 
-    <button class="option" onclick="checkAnswer(true)">
-      B. Intravenous
-    </button>
+  </div>
 
-    <button class="option" onclick="checkAnswer(false)">
-      C. Subcutaneous
-    </button>
+  <div id="result" class="card">
 
-    <button class="option" onclick="checkAnswer(false)">
-      D. Rectal
-    </button>
+    <h2>🎉 Quiz Complete!</h2>
 
-    <p id="result"></p>
+    <p id="score"></p>
+
+    <p id="message"></p>
+
+    <button onclick="restartQuiz()">🔄 Try Again</button>
 
     <button onclick="goHome()">← Back to Home</button>
 
@@ -129,25 +127,150 @@
 
 <script>
 
+const questions = [
+
+  {
+    question: "Which route of drug administration generally gives 100% bioavailability?",
+    options: [
+      "Oral",
+      "Intravenous",
+      "Subcutaneous",
+      "Rectal"
+    ],
+    answer: 1
+  },
+
+  {
+    question: "What is the study of drugs and their effects on living organisms?",
+    options: [
+      "Pharmacology",
+      "Anatomy",
+      "Histology",
+      "Botany"
+    ],
+    answer: 0
+  },
+
+  {
+    question: "Which organ is primarily responsible for most drug metabolism?",
+    options: [
+      "Heart",
+      "Liver",
+      "Lung",
+      "Spleen"
+    ],
+    answer: 1
+  },
+
+  {
+    question: "What does MCQ stand for?",
+    options: [
+      "Multiple Choice Question",
+      "Medical Clinical Quiz",
+      "Multiple Clinical Question",
+      "Medical Choice Quiz"
+    ],
+    answer: 0
+  },
+
+  {
+    question: "Which dosage form is designed to be swallowed?",
+    options: [
+      "Tablet",
+      "Eye drop",
+      "Ointment",
+      "Injection"
+    ],
+    answer: 0
+  }
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
 function startQuiz() {
+
+  currentQuestion = 0;
+  score = 0;
+
   document.getElementById("home").style.display = "none";
+  document.getElementById("result").style.display = "none";
   document.getElementById("quiz").style.display = "block";
+
+  showQuestion();
 }
 
-function checkAnswer(correct) {
+function showQuestion() {
 
-  const result = document.getElementById("result");
+  const q = questions[currentQuestion];
 
-  if (correct) {
-    result.textContent = "✅ Correct! Intravenous administration has 100% bioavailability.";
+  document.getElementById("questionNumber").textContent =
+    "Question " + (currentQuestion + 1) + " of " + questions.length;
+
+  document.getElementById("question").textContent = q.question;
+
+  const optionsContainer = document.getElementById("options");
+
+  optionsContainer.innerHTML = "";
+
+  q.options.forEach((option, index) => {
+
+    const button = document.createElement("button");
+
+    button.textContent = option;
+
+    button.className = "option";
+
+    button.onclick = function() {
+      checkAnswer(index);
+    };
+
+    optionsContainer.appendChild(button);
+
+  });
+}
+
+function checkAnswer(selected) {
+
+  if (selected === questions[currentQuestion].answer) {
+    score++;
+  }
+
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    showQuestion();
   } else {
-    result.textContent = "❌ Incorrect. The correct answer is B. Intravenous.";
+    showResult();
   }
 }
 
-function goHome() {
+function showResult() {
+
   document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "block";
+
+  document.getElementById("score").textContent =
+    score + " / " + questions.length;
+
+  const percentage =
+    Math.round((score / questions.length) * 100);
+
+  document.getElementById("message").textContent =
+    "Your score: " + percentage + "%";
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function goHome() {
+
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "none";
   document.getElementById("home").style.display = "block";
+
 }
 
 </script>
