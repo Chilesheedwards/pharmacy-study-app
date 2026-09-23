@@ -20,15 +20,6 @@
       text-align: center;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    header p {
-      margin-bottom: 0;
-    }
-
     .container {
       padding: 20px;
       max-width: 700px;
@@ -43,10 +34,6 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    .card h2 {
-      margin-top: 0;
-    }
-
     button {
       width: 100%;
       padding: 14px;
@@ -57,43 +44,113 @@
       color: white;
       font-size: 16px;
     }
+
+    .option {
+      background: #eee;
+      color: #222;
+    }
+
+    #quiz {
+      display: none;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 15px;
+    }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>💊 Pharmacy Study App</h1>
-    <p>Learn • Practice • Revise</p>
-  </header>
+<header>
+  <h1>💊 Pharmacy Study App</h1>
+  <p>Learn • Practice • Revise</p>
+</header>
 
-  <div class="container">
+<div class="container">
+
+  <div id="home">
 
     <div class="card">
       <h2>📚 Study Notes</h2>
-      <p>Read your pharmacy notes and study important topics.</p>
-      <button>Open Notes</button>
+      <p>Read your pharmacy notes.</p>
     </div>
 
     <div class="card">
       <h2>📝 MCQs</h2>
-      <p>Test your knowledge with multiple-choice questions.</p>
-      <button>Start Quiz</button>
+      <p>Test your pharmacy knowledge.</p>
+      <button onclick="startQuiz()">Start Quiz</button>
     </div>
 
     <div class="card">
       <h2>🎴 Flashcards</h2>
-      <p>Revise important pharmacy concepts using flashcards.</p>
-      <button>Open Flashcards</button>
+      <p>Revise important concepts.</p>
     </div>
 
     <div class="card">
       <h2>📊 My Scores</h2>
-      <p>Track your quiz performance and progress.</p>
-      <button>View Scores</button>
+      <p>Track your performance.</p>
     </div>
 
   </div>
+
+  <div id="quiz" class="card">
+
+    <h2>📝 Pharmacy MCQ</h2>
+
+    <p><strong>Question 1:</strong></p>
+
+    <p>Which route of drug administration generally gives 100% bioavailability?</p>
+
+    <button class="option" onclick="checkAnswer(false)">
+      A. Oral
+    </button>
+
+    <button class="option" onclick="checkAnswer(true)">
+      B. Intravenous
+    </button>
+
+    <button class="option" onclick="checkAnswer(false)">
+      C. Subcutaneous
+    </button>
+
+    <button class="option" onclick="checkAnswer(false)">
+      D. Rectal
+    </button>
+
+    <p id="result"></p>
+
+    <button onclick="goHome()">← Back to Home</button>
+
+  </div>
+
+</div>
+
+<script>
+
+function startQuiz() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+}
+
+function checkAnswer(correct) {
+
+  const result = document.getElementById("result");
+
+  if (correct) {
+    result.textContent = "✅ Correct! Intravenous administration has 100% bioavailability.";
+  } else {
+    result.textContent = "❌ Incorrect. The correct answer is B. Intravenous.";
+  }
+}
+
+function goHome() {
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("home").style.display = "block";
+}
+
+</script>
 
 </body>
 </html>
