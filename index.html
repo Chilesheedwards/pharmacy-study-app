@@ -50,8 +50,16 @@
       color: #222;
     }
 
+    .subject {
+      background: #f1f7f5;
+      color: #176b5b;
+      text-align: left;
+      font-weight: bold;
+    }
+
     #quiz,
-    #result {
+    #result,
+    #notes {
       display: none;
     }
 
@@ -59,6 +67,10 @@
       font-size: 28px;
       font-weight: bold;
       text-align: center;
+    }
+
+    .note-content {
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -72,11 +84,14 @@
 
 <div class="container">
 
+  <!-- HOME -->
+
   <div id="home">
 
     <div class="card">
       <h2>📚 Study Notes</h2>
-      <p>Read your pharmacy notes.</p>
+      <p>Read organized pharmacy notes.</p>
+      <button onclick="openNotes()">Open Notes</button>
     </div>
 
     <div class="card">
@@ -88,6 +103,7 @@
     <div class="card">
       <h2>🎴 Flashcards</h2>
       <p>Revise important concepts.</p>
+      <button>Open Flashcards</button>
     </div>
 
     <div class="card">
@@ -96,6 +112,49 @@
     </div>
 
   </div>
+
+
+  <!-- NOTES -->
+
+  <div id="notes">
+
+    <div class="card">
+
+      <h2>📚 Pharmacy Subjects</h2>
+
+      <p>Select a subject to study.</p>
+
+      <button class="subject" onclick="showNote('pharmacology')">
+        💊 Pharmacology
+      </button>
+
+      <button class="subject" onclick="showNote('pharmacognosy')">
+        🌿 Pharmacognosy
+      </button>
+
+      <button class="subject" onclick="showNote('pharmaceutics')">
+        💉 Pharmaceutics
+      </button>
+
+      <button class="subject" onclick="showNote('medicinal')">
+        🧪 Medicinal Chemistry
+      </button>
+
+      <button class="subject" onclick="showNote('pathology')">
+        🔬 Pathology
+      </button>
+
+    </div>
+
+    <div id="noteDisplay" class="card note-content">
+    </div>
+
+    <button onclick="goHome()">← Back to Home</button>
+
+  </div>
+
+
+  <!-- QUIZ -->
 
   <div id="quiz" class="card">
 
@@ -108,6 +167,9 @@
     <div id="options"></div>
 
   </div>
+
+
+  <!-- RESULT -->
 
   <div id="result" class="card">
 
@@ -125,40 +187,26 @@
 
 </div>
 
+
 <script>
 
 const questions = [
 
   {
     question: "Which route of drug administration generally gives 100% bioavailability?",
-    options: [
-      "Oral",
-      "Intravenous",
-      "Subcutaneous",
-      "Rectal"
-    ],
+    options: ["Oral", "Intravenous", "Subcutaneous", "Rectal"],
     answer: 1
   },
 
   {
     question: "What is the study of drugs and their effects on living organisms?",
-    options: [
-      "Pharmacology",
-      "Anatomy",
-      "Histology",
-      "Botany"
-    ],
+    options: ["Pharmacology", "Anatomy", "Histology", "Botany"],
     answer: 0
   },
 
   {
     question: "Which organ is primarily responsible for most drug metabolism?",
-    options: [
-      "Heart",
-      "Liver",
-      "Lung",
-      "Spleen"
-    ],
+    options: ["Heart", "Liver", "Lung", "Spleen"],
     answer: 1
   },
 
@@ -175,19 +223,16 @@ const questions = [
 
   {
     question: "Which dosage form is designed to be swallowed?",
-    options: [
-      "Tablet",
-      "Eye drop",
-      "Ointment",
-      "Injection"
-    ],
+    options: ["Tablet", "Eye drop", "Ointment", "Injection"],
     answer: 0
   }
 
 ];
 
+
 let currentQuestion = 0;
 let score = 0;
+
 
 function startQuiz() {
 
@@ -195,11 +240,13 @@ function startQuiz() {
   score = 0;
 
   document.getElementById("home").style.display = "none";
+  document.getElementById("notes").style.display = "none";
   document.getElementById("result").style.display = "none";
   document.getElementById("quiz").style.display = "block";
 
   showQuestion();
 }
+
 
 function showQuestion() {
 
@@ -229,7 +276,9 @@ function showQuestion() {
     optionsContainer.appendChild(button);
 
   });
+
 }
+
 
 function checkAnswer(selected) {
 
@@ -244,7 +293,9 @@ function checkAnswer(selected) {
   } else {
     showResult();
   }
+
 }
+
 
 function showResult() {
 
@@ -259,16 +310,127 @@ function showResult() {
 
   document.getElementById("message").textContent =
     "Your score: " + percentage + "%";
+
 }
+
 
 function restartQuiz() {
   startQuiz();
 }
 
+
+function openNotes() {
+
+  document.getElementById("home").style.display = "none";
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "none";
+  document.getElementById("notes").style.display = "block";
+
+}
+
+
+function showNote(subject) {
+
+  const display = document.getElementById("noteDisplay");
+
+  if (subject === "pharmacology") {
+
+    display.innerHTML = `
+      <h2>💊 Pharmacology</h2>
+      <h3>Definition</h3>
+      <p>Pharmacology is the study of drugs, including their actions, effects and interactions with living organisms.</p>
+
+      <h3>Major areas</h3>
+      <ul>
+        <li>Pharmacodynamics</li>
+        <li>Pharmacokinetics</li>
+        <li>Drug interactions</li>
+        <li>Adverse drug effects</li>
+      </ul>
+    `;
+
+  }
+
+  else if (subject === "pharmacognosy") {
+
+    display.innerHTML = `
+      <h2>🌿 Pharmacognosy</h2>
+      <h3>Definition</h3>
+      <p>Pharmacognosy is the study of medicinal substances obtained from natural sources.</p>
+
+      <h3>Sources</h3>
+      <ul>
+        <li>Plants</li>
+        <li>Animals</li>
+        <li>Microorganisms</li>
+        <li>Marine sources</li>
+      </ul>
+    `;
+
+  }
+
+  else if (subject === "pharmaceutics") {
+
+    display.innerHTML = `
+      <h2>💉 Pharmaceutics</h2>
+      <h3>Definition</h3>
+      <p>Pharmaceutics deals with the formulation and preparation of medicines into suitable dosage forms.</p>
+
+      <h3>Examples</h3>
+      <ul>
+        <li>Tablets</li>
+        <li>Capsules</li>
+        <li>Solutions</li>
+        <li>Suspensions</li>
+      </ul>
+    `;
+
+  }
+
+  else if (subject === "medicinal") {
+
+    display.innerHTML = `
+      <h2>🧪 Medicinal Chemistry</h2>
+      <h3>Definition</h3>
+      <p>Medicinal chemistry involves the design, synthesis and study of chemical substances used as medicines.</p>
+
+      <h3>Important areas</h3>
+      <ul>
+        <li>Drug structure</li>
+        <li>Drug synthesis</li>
+        <li>Structure–activity relationships</li>
+        <li>Drug optimization</li>
+      </ul>
+    `;
+
+  }
+
+  else if (subject === "pathology") {
+
+    display.innerHTML = `
+      <h2>🔬 Pathology</h2>
+      <h3>Definition</h3>
+      <p>Pathology is the study of disease processes and the structural and functional changes they produce.</p>
+
+      <h3>Major areas</h3>
+      <ul>
+        <li>Cell injury</li>
+        <li>Inflammation</li>
+        <li>Immunology</li>
+        <li>Neoplasia</li>
+      </ul>
+    `;
+
+  }
+
+}
+
+
 function goHome() {
 
   document.getElementById("quiz").style.display = "none";
   document.getElementById("result").style.display = "none";
+  document.getElementById("notes").style.display = "none";
   document.getElementById("home").style.display = "block";
 
 }
