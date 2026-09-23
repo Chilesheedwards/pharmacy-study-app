@@ -99,12 +99,12 @@
       <p>Test your pharmacy knowledge.</p>
       <button onclick="startQuiz()">Start Quiz</button>
     </div>
-
-    <div class="card">
-      <h2>🎴 Flashcards</h2>
-      <p>Revise important concepts.</p>
-      <button>Open Flashcards</button>
-    </div>
+    
+<div class="card">
+  <h2>🎴 Flashcards</h2>
+  <p>Revise important pharmacy concepts.</p>
+  <button onclick="openFlashcards()">Open Flashcards</button>
+</div>
 
     <div class="card">
       <h2>📊 My Scores</h2>
@@ -112,6 +112,7 @@
     </div>
 
   </div>
+  document.getElementById("flashcards").style.display = "none";
 
 
   <!-- NOTES -->
@@ -152,6 +153,29 @@
     <button onclick="goHome()">← Back to Home</button>
 
   </div>
+  <!-- FLASHCARDS -->
+
+<div id="flashcards" class="card">
+
+  <h2>🎴 Pharmacy Flashcards</h2>
+
+  <p id="flashcardProgress"></p>
+
+  <div class="card">
+    <h2 id="flashcardQuestion"></h2>
+
+    <button onclick="showFlashcardAnswer()">
+      👁️ Show Answer
+    </button>
+
+    <p id="flashcardAnswer" style="display:none;"></p>
+  </div>
+
+  <button onclick="nextFlashcard()">➡️ Next Card</button>
+
+  <button onclick="goHome()">← Back to Home</button>
+
+</div>
 
 
   <!-- QUIZ -->
@@ -228,6 +252,36 @@ const questions = [
   }
 
 ];
+  const flashcards = [
+
+  {
+    question: "What is pharmacology?",
+    answer: "Pharmacology is the study of drugs and their effects on living organisms."
+  },
+
+  {
+    question: "What is pharmacokinetics?",
+    answer: "Pharmacokinetics is the study of what the body does to a drug: absorption, distribution, metabolism and excretion."
+  },
+
+  {
+    question: "What is pharmacodynamics?",
+    answer: "Pharmacodynamics is the study of what a drug does to the body, including its effects and mechanisms of action."
+  },
+
+  {
+    question: "What is bioavailability?",
+    answer: "Bioavailability is the fraction of an administered drug dose that reaches the systemic circulation unchanged."
+  },
+
+  {
+    question: "Which organ is the major site of drug metabolism?",
+    answer: "The liver is the major site of metabolism for many drugs."
+  }
+
+];
+
+let currentFlashcard = 0;
 
 
 let currentQuestion = 0;
@@ -434,7 +488,56 @@ function goHome() {
   document.getElementById("home").style.display = "block";
 
 }
+function openFlashcards() {
 
+  document.getElementById("home").style.display = "none";
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "none";
+  document.getElementById("notes").style.display = "none";
+  document.getElementById("flashcards").style.display = "block";
+
+  currentFlashcard = 0;
+  showFlashcard();
+
+}
+
+
+function showFlashcard() {
+
+  const card = flashcards[currentFlashcard];
+
+  document.getElementById("flashcardProgress").textContent =
+    "Card " + (currentFlashcard + 1) + " of " + flashcards.length;
+
+  document.getElementById("flashcardQuestion").textContent =
+    card.question;
+
+  document.getElementById("flashcardAnswer").textContent =
+    card.answer;
+
+  document.getElementById("flashcardAnswer").style.display = "none";
+
+}
+
+
+function showFlashcardAnswer() {
+
+  document.getElementById("flashcardAnswer").style.display = "block";
+
+}
+
+
+function nextFlashcard() {
+
+  currentFlashcard++;
+
+  if (currentFlashcard >= flashcards.length) {
+    currentFlashcard = 0;
+  }
+
+  showFlashcard();
+
+}
 </script>
 
 </body>
