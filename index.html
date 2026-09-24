@@ -84,36 +84,54 @@
 
 <div class="container">
 
-  <!-- HOME -->
+<!-- HOME -->
+<div id="home">
 
-  <div id="home">
+  <div class="card">
+    <h2>📚 Study Notes</h2>
+    <p>Read organized pharmacy notes.</p>
+    <button onclick="openNotes()">Open Notes</button>
+  </div>
 
-    <div class="card">
-      <h2>📚 Study Notes</h2>
-      <p>Read organized pharmacy notes.</p>
-      <button onclick="openNotes()">Open Notes</button>
-    </div>
+  <div class="card">
+    <h2>📝 MCQs</h2>
+    <p>Test your pharmacy knowledge.</p>
+    <button onclick="startQuiz()">Start Quiz</button>
+  </div>
 
-    <div class="card">
-      <h2>📝 MCQs</h2>
-      <p>Test your pharmacy knowledge.</p>
-      <button onclick="startQuiz()">Start Quiz</button>
-    </div>
-    
-<div class="card">
-  <h2>🎴 Flashcards</h2>
-  <p>Revise important pharmacy concepts.</p>
-  <button onclick="openFlashcards()">Open Flashcards</button>
+  <div class="card">
+    <h2>🎴 Flashcards</h2>
+    <p>Revise important pharmacy concepts.</p>
+    <button onclick="openFlashcards()">Open Flashcards</button>
+  </div>
+
+  <div class="card">
+    <h2>📊 My Scores</h2>
+    <p>Track your performance.</p>
+  </div>
+
 </div>
 
-    <div class="card">
-      <h2>📊 My Scores</h2>
-      <p>Track your performance.</p>
-    </div>
+<!-- FLASHCARDS SECTION -->
+<div id="flashcards">
+  <h2>Flashcards</h2>
+  <button onclick="closeFlashcards()">Back</button>
+</div>
 
-  </div>
+<script>
+  // Hide flashcards when the page first loads
   document.getElementById("flashcards").style.display = "none";
 
+  function openFlashcards() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("flashcards").style.display = "block";
+  }
+
+  function closeFlashcards() {
+    document.getElementById("flashcards").style.display = "none";
+    document.getElementById("home").style.display = "block";
+  }
+</script>
 
   <!-- NOTES -->
 
