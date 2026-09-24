@@ -57,9 +57,11 @@
       font-weight: bold;
     }
 
+    /* Sections hidden by default; JavaScript shows them when needed */
     #quiz,
     #result,
-    #notes {
+    #notes,
+    #flashcards {
       display: none;
     }
 
@@ -84,57 +86,36 @@
 
 <div class="container">
 
-<!-- HOME -->
-<div id="home">
+  <!-- HOME -->
+  <div id="home">
 
-  <div class="card">
-    <h2>📚 Study Notes</h2>
-    <p>Read organized pharmacy notes.</p>
-    <button onclick="openNotes()">Open Notes</button>
+    <div class="card">
+      <h2>📚 Study Notes</h2>
+      <p>Read organized pharmacy notes.</p>
+      <button onclick="openNotes()">Open Notes</button>
+    </div>
+
+    <div class="card">
+      <h2>📝 MCQs</h2>
+      <p>Test your pharmacy knowledge.</p>
+      <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="card">
+      <h2>🎴 Flashcards</h2>
+      <p>Revise important pharmacy concepts.</p>
+      <button onclick="openFlashcards()">Open Flashcards</button>
+    </div>
+
+    <div class="card">
+      <h2>📊 My Scores</h2>
+      <p>Track your performance.</p>
+    </div>
+
   </div>
 
-  <div class="card">
-    <h2>📝 MCQs</h2>
-    <p>Test your pharmacy knowledge.</p>
-    <button onclick="startQuiz()">Start Quiz</button>
-  </div>
-
-  <div class="card">
-    <h2>🎴 Flashcards</h2>
-    <p>Revise important pharmacy concepts.</p>
-    <button onclick="openFlashcards()">Open Flashcards</button>
-  </div>
-
-  <div class="card">
-    <h2>📊 My Scores</h2>
-    <p>Track your performance.</p>
-  </div>
-
-</div>
-
-<!-- FLASHCARDS SECTION -->
-<div id="flashcards">
-  <h2>Flashcards</h2>
-  <button onclick="closeFlashcards()">Back</button>
-</div>
-
-<script>
-  // Hide flashcards when the page first loads
-  document.getElementById("flashcards").style.display = "none";
-
-  function openFlashcards() {
-    document.getElementById("home").style.display = "none";
-    document.getElementById("flashcards").style.display = "block";
-  }
-
-  function closeFlashcards() {
-    document.getElementById("flashcards").style.display = "none";
-    document.getElementById("home").style.display = "block";
-  }
-</script>
 
   <!-- NOTES -->
-
   <div id="notes">
 
     <div class="card">
@@ -171,33 +152,33 @@
     <button onclick="goHome()">← Back to Home</button>
 
   </div>
+
+
   <!-- FLASHCARDS -->
+  <div id="flashcards" class="card">
 
-<div id="flashcards" class="card">
+    <h2>🎴 Pharmacy Flashcards</h2>
 
-  <h2>🎴 Pharmacy Flashcards</h2>
+    <p id="flashcardProgress"></p>
 
-  <p id="flashcardProgress"></p>
+    <div class="card">
+      <h2 id="flashcardQuestion"></h2>
 
-  <div class="card">
-    <h2 id="flashcardQuestion"></h2>
+      <button onclick="showFlashcardAnswer()">
+        👁️ Show Answer
+      </button>
 
-    <button onclick="showFlashcardAnswer()">
-      👁️ Show Answer
-    </button>
+      <p id="flashcardAnswer" style="display:none;"></p>
+    </div>
 
-    <p id="flashcardAnswer" style="display:none;"></p>
+    <button onclick="nextFlashcard()">➡️ Next Card</button>
+
+    <button onclick="goHome()">← Back to Home</button>
+
   </div>
-
-  <button onclick="nextFlashcard()">➡️ Next Card</button>
-
-  <button onclick="goHome()">← Back to Home</button>
-
-</div>
 
 
   <!-- QUIZ -->
-
   <div id="quiz" class="card">
 
     <h2>📝 Pharmacy MCQ</h2>
@@ -212,7 +193,6 @@
 
 
   <!-- RESULT -->
-
   <div id="result" class="card">
 
     <h2>🎉 Quiz Complete!</h2>
@@ -270,7 +250,8 @@ const questions = [
   }
 
 ];
-  const flashcards = [
+
+const flashcards = [
 
   {
     question: "What is pharmacology?",
@@ -300,11 +281,11 @@ const questions = [
 ];
 
 let currentFlashcard = 0;
-
-
 let currentQuestion = 0;
 let score = 0;
 
+
+/* ---------- QUIZ ---------- */
 
 function startQuiz() {
 
@@ -314,6 +295,7 @@ function startQuiz() {
   document.getElementById("home").style.display = "none";
   document.getElementById("notes").style.display = "none";
   document.getElementById("result").style.display = "none";
+  document.getElementById("flashcards").style.display = "none";
   document.getElementById("quiz").style.display = "block";
 
   showQuestion();
@@ -391,11 +373,14 @@ function restartQuiz() {
 }
 
 
+/* ---------- NOTES ---------- */
+
 function openNotes() {
 
   document.getElementById("home").style.display = "none";
   document.getElementById("quiz").style.display = "none";
   document.getElementById("result").style.display = "none";
+  document.getElementById("flashcards").style.display = "none";
   document.getElementById("notes").style.display = "block";
 
 }
@@ -498,14 +483,8 @@ function showNote(subject) {
 }
 
 
-function goHome() {
+/* ---------- FLASHCARDS ---------- */
 
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("result").style.display = "none";
-  document.getElementById("notes").style.display = "none";
-  document.getElementById("home").style.display = "block";
-
-}
 function openFlashcards() {
 
   document.getElementById("home").style.display = "none";
@@ -556,6 +535,20 @@ function nextFlashcard() {
   showFlashcard();
 
 }
+
+
+/* ---------- NAVIGATION ---------- */
+
+function goHome() {
+
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "none";
+  document.getElementById("notes").style.display = "none";
+  document.getElementById("flashcards").style.display = "none";
+  document.getElementById("home").style.display = "block";
+
+}
+
 </script>
 
 </body>
